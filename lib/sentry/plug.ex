@@ -111,18 +111,22 @@ if Code.ensure_loaded?(Plug) do
 
       quote do
         # Ignore 404s for Plug routes
+        IO.inspect "in error handler"
         defp handle_errors(conn, %{reason: %FunctionClauseError{function: :do_match}}) do
+          IO.inspect "function clause error"
           nil
         end
 
         if :code.is_loaded(Phoenix) do
           # Ignore 404s for Phoenix routes
           defp handle_errors(conn, %{reason: %Phoenix.Router.NoRouteError{}}) do
+            IO.inspect "no route found error"
             nil
           end
         end
 
         defp handle_errors(conn, %{kind: kind, reason: reason, stack: stack}) do
+          IO.inspect "in generic error handler"
           opts = [
             body_scrubber: unquote(body_scrubber),
             header_scrubber: unquote(header_scrubber),
