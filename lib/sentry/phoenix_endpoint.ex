@@ -29,23 +29,22 @@ defmodule Sentry.Phoenix.Endpoint do
         catch
           kind, %Phoenix.Router.NoRouteError{} ->
             IO.inspect "we got a raise in sentry"
-            nil
 
           kind, reason ->
-            stacktrace = __STACKTRACE__
-            request = Sentry.Plug.build_request_interface_data(conn, [])
-            exception = Exception.normalize(kind, reason, stacktrace)
+#            stacktrace = __STACKTRACE__
+#            request = Sentry.Plug.build_request_interface_data(conn, [])
+#            exception = Exception.normalize(kind, reason, stacktrace)
 
-            _ =
-              Sentry.capture_exception(
-                exception,
-                stacktrace: stacktrace,
-                request: request,
-                event_source: :endpoint,
-                error_type: kind
-              )
+#            _ =
+#              Sentry.capture_exception(
+#                exception,
+#                stacktrace: stacktrace,
+#                request: request,
+#                event_source: :endpoint,
+#                error_type: kind
+#              )
             IO.inspect "we actually got here for some reason"
-            :erlang.raise(kind, reason, stacktrace)
+#            :erlang.raise(kind, reason, stacktrace)
         end
       end
     end
