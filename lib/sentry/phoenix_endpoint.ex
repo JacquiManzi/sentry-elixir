@@ -30,6 +30,8 @@ defmodule Sentry.Phoenix.Endpoint do
           kind, %Phoenix.Router.NoRouteError{} ->
             IO.inspect "we got a raise in sentry"
             conn
+            |> put_status(:ok)
+            |> send_resp("")
 
           kind, reason ->
             stacktrace = __STACKTRACE__
