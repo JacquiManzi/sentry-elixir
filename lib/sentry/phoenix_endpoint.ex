@@ -28,8 +28,7 @@ defmodule Sentry.Phoenix.Endpoint do
           super(conn, opts)
         catch
           kind, %Phoenix.Router.NoRouteError{} ->
-            IO.inspect "we got a raise in sentry"
-            conn
+            :erlang.raise(kind, %Phoenix.Router.NoRouteError{}, __STACKTRACE__)
 
           kind, reason ->
             stacktrace = __STACKTRACE__
@@ -44,7 +43,7 @@ defmodule Sentry.Phoenix.Endpoint do
                 event_source: :endpoint,
                 error_type: kind
               )
-            IO.inspect "we actually got here for some reason"
+
             :erlang.raise(kind, reason, stacktrace)
         end
       end
